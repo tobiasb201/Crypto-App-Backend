@@ -6,17 +6,17 @@ Setting up Database:
 Code:<br>
 version: '3'
 
-services:
-  database:
-    image: mysql
-    container_name: database
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: crypto_notification
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3305:3306"
+services: <br>
+  database: <br>
+    image: mysql <br>
+    container_name: database <br>
+    environment: <br>
+      MYSQL_ROOT_PASSWORD: password <br>
+      MYSQL_DATABASE: crypto_notification <br>
+      MYSQL_USER: user <br>
+      MYSQL_PASSWORD: password <br>
+    ports: <br>
+      - "3305:3306" <br>
 <br>
 
 
