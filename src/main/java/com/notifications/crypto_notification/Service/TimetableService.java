@@ -29,18 +29,26 @@ public class TimetableService {
     private double minute_hour;
     private double second_hour;
 
+    private double minuteDifference(LocalDateTime minute){
+        LocalDateTime now = LocalDateTime.now();
+        return (double) ChronoUnit.MINUTES.between(minute,now);
+    }
+    private double secondDifference(LocalDateTime second){
+        LocalDateTime now = LocalDateTime.now();
+        return (double) ChronoUnit.SECONDS.between(second,now)/60;
+    }
+
     public Timetable putcurrentprice(ApiModel updatetimetable, Integer id) throws FirebaseMessagingException {
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setCurrentprice(updatetimetable.getLast());
 
         //calculate Time
-        LocalDateTime now = LocalDateTime.now();
         LocalDateTime fifteen = timetable.getLastupdatefifteen();
-        minute_fifteen = (double) ChronoUnit.MINUTES.between(fifteen,now); //minutes between last 15 minute update
-        second_fifteen = (double) ChronoUnit.SECONDS.between(fifteen,now)/60; //seconds between last 15 minute update
+        minute_fifteen = minuteDifference(fifteen); //minutes between last 15 minute update
+        second_fifteen = minuteDifference(fifteen); //seconds between last 15 minute update
         LocalDateTime hour = timetable.getLastupdatehour();
-        minute_hour = (double) ChronoUnit.MINUTES.between(hour,now); //minutes between last 1h update
-        second_hour = (double) ChronoUnit.SECONDS.between(hour,now)/60; //seconds between last 1h update
+        minute_hour = minuteDifference(hour); //minutes between last 1h update
+        second_hour = secondDifference(hour); //seconds between last 1h update
 
         //check for 15Min time difference to send out notification
         if(minute_fifteen+second_fifteen>13.5&&minute_fifteen+second_fifteen<=15.5){
