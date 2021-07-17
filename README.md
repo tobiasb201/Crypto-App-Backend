@@ -18,6 +18,8 @@ services:
     ports:
       - "3305:3306"
 <br>
+
+
 -Open up cmd and go to the file directory your yaml file is placed in. <br>
 -Now type "docker-compose up" and the database is installing.
 
