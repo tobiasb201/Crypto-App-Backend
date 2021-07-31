@@ -1,4 +1,4 @@
-package com.notifications.crypto_notification.Entity;
+package com.notifications.crypto_notification.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiModel {
+public class PriceModel {
 
     private double open;
     private double high;
@@ -16,6 +16,4 @@ public class ApiModel {
     private double last;
     private double volume_30day;
 
-    public ApiModel(){
-    }
 }

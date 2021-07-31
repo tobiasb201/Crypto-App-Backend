@@ -1,74 +1,53 @@
-package com.notifications.crypto_notification.Service;
+package com.notifications.crypto_notification.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.notifications.crypto_notification.Entity.ApiModel;
+import com.notifications.crypto_notification.entity.PriceModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
 public class ApiService {
-
     @Autowired
     public RestTemplate restTemplate;
-
     @Autowired
     public TimetableService timetableService;
+    final static List<String> Assets = Arrays.asList("BTC","BAT","ETH","LTC","ADA","LINK","XLM","EOS","XTZ");
+    private PriceModel[] prices = new PriceModel[Assets.size()];
 
-    private List<String> assets = Arrays.asList("BTC","BAT","ETH","LTC","ADA","LINK","XLM","EOS","XTZ");
+    public void updateTimetable(String timeOption) throws FirebaseMessagingException {
+        int index = 1;
+        for (int i = 0; i < Assets.size(); i++) {
+            prices[i] = restTemplate.getForObject("https://api.pro.coinbase.com/products/" + Assets.get(i) + "-USD/stats", PriceModel.class);
+            PriceModel priceModel = prices[i];
+            switch(timeOption){
+                case "current": timetableService.putCurrentPrice(priceModel, index);
+                break;
+                case "fifteen":timetableService.putFifteen(priceModel,index);
+                break;
+                case "hour": timetableService.putHour(priceModel,index);
+                break;
+            }
+            index = index + 1;
+        }
+    }
 
-    public int index=0;
-
-    ApiModel[] prices = new ApiModel[assets.size()];
-
-    //Scheduled for every minute to execute
     @Scheduled(fixedRate = 60000)
-    public List<ApiModel> updatetimetable() throws FirebaseMessagingException {
-        for(int i=0;i<assets.size();i++){
-            index=index+1;
-            prices[i]=restTemplate.getForObject("https://api.pro.coinbase.com/products/"+ assets.get(i) +"-USD/stats",ApiModel.class);
-            ApiModel model= prices[i];
-            timetableService.putcurrentprice(model,index);
-            log.info(String.valueOf(index));
-        }
-        index=0;
-        return Arrays.asList(prices.clone());
+    public void callUpdateTimetableForCurrent() throws FirebaseMessagingException {
+        updateTimetable("current");
     }
-
-    //Scheduled for every 15 minutes to execute
     @Scheduled(fixedRate = 900000)
-    public List<ApiModel> updatetimetablefifteen() throws ExecutionException, InterruptedException {
-        for(int i=0;i<assets.size();i++){
-            index=index+1;
-            prices[i]=restTemplate.getForObject("https://api.pro.coinbase.com/products/"+ assets.get(i) +"-USD/stats",ApiModel.class);
-            ApiModel model= prices[i];
-            timetableService.putfifteen(model,index);
-            log.info(String.valueOf(index));
-        }
-        index=0;
-        return Arrays.asList(prices.clone());
+    public void callUpdateTimetableForFifteen() throws FirebaseMessagingException {
+        updateTimetable("fifteen");
     }
-
-    //Scheduled for every hour to execute
     @Scheduled(fixedRate = 3600000)
-    public List<ApiModel> updatetimetablehour() throws ExecutionException, InterruptedException {
-        for(int i=0;i<assets.size();i++){
-            index=index+1;
-            prices[i]=restTemplate.getForObject("https://api.pro.coinbase.com/products/"+ assets.get(i) +"-USD/stats",ApiModel.class);
-            ApiModel model= prices[i];
-            timetableService.puthour(model,index);
-            log.info(String.valueOf(index));
-        }
-        index=0;
-        return Arrays.asList(prices.clone());
+    public void callUpdateTimetableForHour() throws FirebaseMessagingException {
+        updateTimetable("hour");
     }
-
 }

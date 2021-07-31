@@ -1,4 +1,4 @@
-package com.notifications.crypto_notification.Entity;
+package com.notifications.crypto_notification.entity;
 
 import java.time.LocalDateTime;
 import com.sun.istack.NotNull;

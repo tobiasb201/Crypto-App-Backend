@@ -1,17 +1,13 @@
-package com.notifications.crypto_notification.Service;
+package com.notifications.crypto_notification.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.notifications.crypto_notification.Entity.ApiModel;
-import com.notifications.crypto_notification.Entity.Timetable;
-import com.notifications.crypto_notification.Repository.TimetableRepository;
-import org.joda.time.DateTime;
+import com.notifications.crypto_notification.entity.PriceModel;
+import com.notifications.crypto_notification.entity.Timetable;
+import com.notifications.crypto_notification.repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.ExecutionException;
 import java.time.LocalDateTime;
 
 @Service
@@ -38,7 +34,7 @@ public class TimetableService {
         return (double) ChronoUnit.SECONDS.between(second,now)/60;
     }
 
-    public Timetable putcurrentprice(ApiModel updatetimetable, Integer id) throws FirebaseMessagingException {
+    public Timetable putCurrentPrice(PriceModel updatetimetable, Integer id) throws FirebaseMessagingException {
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setCurrentprice(updatetimetable.getLast());
 
@@ -57,12 +53,12 @@ public class TimetableService {
             if(timetable.getCurrentprice()<timetable.getFifteen()){ // decrease
                 percentage = (timetable.getFifteen() - timetable.getCurrentprice()) / timetable.getFifteen() *100;
                 if(percentage>=3){
-                    firebaseService.sendToTopic(timetable.getAsset(),time_fifteen,percentage,"decreased");
+                    firebaseService.sendNotificationByTopic(timetable.getAsset(),time_fifteen,percentage,"decreased");
                 }
             }else if(timetable.getCurrentprice()>timetable.getFifteen()){ //increase
                 percentage =  (timetable.getCurrentprice() - timetable.getFifteen()) / timetable.getFifteen() *100;
                 if(percentage>=3) {
-                    firebaseService.sendToTopic(timetable.getAsset(), time_fifteen, percentage, "increased");
+                    firebaseService.sendNotificationByTopic(timetable.getAsset(), time_fifteen, percentage, "increased");
                 }
             }
         }
@@ -74,26 +70,26 @@ public class TimetableService {
             if(timetable.getCurrentprice()<timetable.getHour()){//decrease
                 percentage = (timetable.getHour() - timetable.getCurrentprice()) / timetable.getHour() * 100;
                 if(percentage>=3){
-                    firebaseService.sendToTopic(timetable.getAsset(),time_hour,percentage,"decreased");
+                    firebaseService.sendNotificationByTopic(timetable.getAsset(),time_hour,percentage,"decreased");
                 }
             }else if(timetable.getCurrentprice()>timetable.getHour()){//increase
                 percentage = (timetable.getCurrentprice() - timetable.getHour()) / timetable.getHour() * 100;
                 if(percentage>=3){
-                    firebaseService.sendToTopic(timetable.getAsset(),time_hour,percentage,"increased");
+                    firebaseService.sendNotificationByTopic(timetable.getAsset(),time_hour,percentage,"increased");
                 }
             }
         }
         return timetableRepository.save(timetable);
     }
 
-    public Timetable putfifteen(ApiModel updatetimetable, Integer id){
+    public Timetable putFifteen(PriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setFifteen(updatetimetable.getLast());
         timetable.setLastupdatefifteen(LocalDateTime.now());
         return timetableRepository.save(timetable);
     }
 
-    public Timetable puthour(ApiModel updatetimetable, Integer id){
+    public Timetable putHour(PriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setHour(updatetimetable.getLast());
         timetable.setLastupdatehour(LocalDateTime.now());
