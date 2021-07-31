@@ -6,4 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TimetableRepository extends JpaRepository<Timetable,Integer> {
-}
+} //Jpa methods for timetable

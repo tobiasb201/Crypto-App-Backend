@@ -21,10 +21,10 @@ public class FirebaseService {
         for (int i=0;i<percentageList.size();i++) { //Goes trough the List of percentages
             Message message = Message.builder() //Sends each percentage Topic
                     .setNotification(Notification.builder()
-                            .setTitle("Asset:"+asset)
-                            .setBody(asset+" "+increase_decrease+" by "+roundedPercentage+"% in the past "+time)
+                            .setTitle("Asset:"+asset) //Notification Title
+                            .setBody(asset+" "+increase_decrease+" by "+roundedPercentage+"% in the past "+time) //Notification body
                             .build())
-                    .setTopic(asset+time+percentageList.get(i)).build();
+                    .setTopic(asset+time+percentageList.get(i)).build(); //Topic name
 
             String response = FirebaseMessaging.getInstance().send(message);
             System.out.println("Successfully sent message to"+response);

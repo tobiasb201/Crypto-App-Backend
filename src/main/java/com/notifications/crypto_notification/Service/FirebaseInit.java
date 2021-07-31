@@ -13,10 +13,10 @@ import java.io.FileInputStream;
 public class FirebaseInit {
 
     @PostConstruct
-    public void init() throws FirebaseMessagingException {
+    public void init() throws FirebaseMessagingException { //Initialising Firebase Project to Backend
         try {
             FileInputStream serviceAccount =
-                    new FileInputStream("./serviceAccount.json");
+                    new FileInputStream("./serviceAccount.json"); //service Account for the Project
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))

@@ -84,14 +84,14 @@ public class TimetableService {
 
     public Timetable putFifteen(PriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
-        timetable.setFifteen(updatetimetable.getLast());
+        timetable.setFifteen(updatetimetable.getLast()); //sets new price and time
         timetable.setLastupdatefifteen(LocalDateTime.now());
         return timetableRepository.save(timetable);
     }
 
     public Timetable putHour(PriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
-        timetable.setHour(updatetimetable.getLast());
+        timetable.setHour(updatetimetable.getLast()); //sets new price and time
         timetable.setLastupdatehour(LocalDateTime.now());
         return timetableRepository.save(timetable);
     }

@@ -9,11 +9,11 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PriceModel {
 
-    private double open;
-    private double high;
-    private double low;
-    private double volume;
-    private double last;
-    private double volume_30day;
+    private double open; //not relevant
+    private double high; //not relevant
+    private double low; //not relevant
+    private double volume; //not relevant
+    private double last; //current Price
+    private double volume_30day; //not relevant
 
 }

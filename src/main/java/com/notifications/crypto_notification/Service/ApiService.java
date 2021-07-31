@@ -19,7 +19,7 @@ public class ApiService {
     @Autowired
     public TimetableService timetableService;
     final static List<String> Assets = Arrays.asList("BTC","BAT","ETH","LTC","ADA","LINK","XLM","EOS","XTZ");
-    private PriceModel[] prices = new PriceModel[Assets.size()];
+    private PriceModel[] prices = new PriceModel[Assets.size()]; //json model for asset
 
     public void updateTimetable(String timeOption) throws FirebaseMessagingException {
         int index = 1;
@@ -27,26 +27,26 @@ public class ApiService {
             prices[i] = restTemplate.getForObject("https://api.pro.coinbase.com/products/" + Assets.get(i) + "-USD/stats", PriceModel.class);
             PriceModel priceModel = prices[i];
             switch(timeOption){
-                case "current": timetableService.putCurrentPrice(priceModel, index);
+                case "current": timetableService.putCurrentPrice(priceModel, index); //send current price to current attribute
                 break;
-                case "fifteen":timetableService.putFifteen(priceModel,index);
+                case "fifteen":timetableService.putFifteen(priceModel,index); //send current price to 15 minute attribute
                 break;
-                case "hour": timetableService.putHour(priceModel,index);
+                case "hour": timetableService.putHour(priceModel,index); //send current price to 1 hour attribute
                 break;
             }
-            index = index + 1;
+            index++;
         }
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 60000) //Executes every 60 seconds
     public void callUpdateTimetableForCurrent() throws FirebaseMessagingException {
         updateTimetable("current");
     }
-    @Scheduled(fixedRate = 900000)
+    @Scheduled(fixedRate = 900000)//Executes every 15 minutes
     public void callUpdateTimetableForFifteen() throws FirebaseMessagingException {
         updateTimetable("fifteen");
     }
-    @Scheduled(fixedRate = 3600000)
+    @Scheduled(fixedRate = 3600000)//Executes every hour
     public void callUpdateTimetableForHour() throws FirebaseMessagingException {
         updateTimetable("hour");
     }
