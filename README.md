@@ -1,5 +1,8 @@
 # Crypto-App-Backend
-
+Java Version:
+<br>
+java jdk 15.0
+<br>
 Setting up Database:
 -Install Docker Desktop for the local Database.<br>
 -Create a new Directory and paste this code into a new text file that ends with .yaml <br>
