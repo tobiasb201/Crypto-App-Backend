@@ -1,7 +1,7 @@
 package com.notifications.crypto_notification.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.notifications.crypto_notification.entity.PriceModel;
+import com.notifications.crypto_notification.entity.CoinbaseApiPriceModel;
 import com.notifications.crypto_notification.entity.Timetable;
 import com.notifications.crypto_notification.repository.TimetableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class TimetableService {
         return (double) ChronoUnit.SECONDS.between(second,now)/60;
     }
 
-    public Timetable putCurrentPrice(PriceModel updatetimetable, Integer id) throws FirebaseMessagingException {
+    public Timetable putCurrentPrice(CoinbaseApiPriceModel updatetimetable, Integer id) throws FirebaseMessagingException {
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setCurrentprice(updatetimetable.getLast());
 
@@ -82,14 +82,14 @@ public class TimetableService {
         return timetableRepository.save(timetable);
     }
 
-    public Timetable putFifteen(PriceModel updatetimetable, Integer id){
+    public Timetable putFifteen(CoinbaseApiPriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setFifteen(updatetimetable.getLast()); //sets new price and time
         timetable.setLastupdatefifteen(LocalDateTime.now());
         return timetableRepository.save(timetable);
     }
 
-    public Timetable putHour(PriceModel updatetimetable, Integer id){
+    public Timetable putHour(CoinbaseApiPriceModel updatetimetable, Integer id){
         Timetable timetable =timetableRepository.findById(id).orElse(null);
         timetable.setHour(updatetimetable.getLast()); //sets new price and time
         timetable.setLastupdatehour(LocalDateTime.now());

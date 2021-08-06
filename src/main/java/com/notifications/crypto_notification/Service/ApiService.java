@@ -1,7 +1,7 @@
 package com.notifications.crypto_notification.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.notifications.crypto_notification.entity.PriceModel;
+import com.notifications.crypto_notification.entity.CoinbaseApiPriceModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,13 +19,13 @@ public class ApiService {
     @Autowired
     public TimetableService timetableService;
     final static List<String> Assets = Arrays.asList("BTC","BAT","ETH","LTC","ADA","LINK","XLM","EOS","XTZ");
-    private PriceModel[] prices = new PriceModel[Assets.size()]; //json model for asset
+    private CoinbaseApiPriceModel[] prices = new CoinbaseApiPriceModel[Assets.size()]; //json model for asset
 
     public void updateTimetable(String timeOption) throws FirebaseMessagingException {
         int index = 1;
         for (int i = 0; i < Assets.size(); i++) {
-            prices[i] = restTemplate.getForObject("https://api.pro.coinbase.com/products/" + Assets.get(i) + "-USD/stats", PriceModel.class);
-            PriceModel priceModel = prices[i];
+            prices[i] = restTemplate.getForObject("https://api.pro.coinbase.com/products/" + Assets.get(i) + "-USD/stats", CoinbaseApiPriceModel.class);
+            CoinbaseApiPriceModel priceModel = prices[i];
             switch(timeOption){
                 case "current": timetableService.putCurrentPrice(priceModel, index); //send current price to current attribute
                 break;

@@ -14,7 +14,7 @@ public class FirebaseService {
     List<String> percentageList = new ArrayList<>();
 
     public void sendNotificationByTopic(String asset, String time, double percentage, String increase_decrease) throws FirebaseMessagingException {
-        checkpercentage(percentage); //Calls function to check the percentage's that have to be sent
+        checkPercentage(percentage); //Calls function to check the percentage's that have to be sent
         Double roundedPercentage = BigDecimal.valueOf(percentage) //Rounds Percentage by 3digits after dot
                 .setScale(3, RoundingMode.HALF_DOWN).doubleValue();
 
@@ -32,7 +32,7 @@ public class FirebaseService {
         percentageList.clear(); //Clears List so next call will have it empty again
     }
 
-    void checkpercentage(double percentage){
+    void checkPercentage(double percentage){
         percentageList.add("3%"); //Auto add because function only gets called when 3% is reached
         if(percentage>=4){ //Checks further for 4% and 5%
             percentageList.add("4%");

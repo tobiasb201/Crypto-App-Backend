@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PriceModel {
+public class CoinbaseApiPriceModel {
 
     private double open; //not relevant
     private double high; //not relevant
